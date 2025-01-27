@@ -24,9 +24,9 @@ The architectural structure of the LightEstate application is illustrated below:
 
 LightEstate is an AI-powered web application that simplifies and automates real estate agreement management. Here’s what it offers:
 
-- **📄 Document Generation with AI**: Users can generate customized real estate agreements using Azure AI's GPT-4o model, ensuring speed and accuracy.
 - **✍️ Streamlined Signing**: Enables users to sign agreements themselves or send agreements to multiple parties seamlessly through DocuSign APIs.
-- **🔒 Multifactor Authentication**: Ensures security by requiring phone authentication for recipients.
+- **📄 Document Generation with AI**: Users can generate customized real estate agreements using Azure AI's GPT-4o model, ensuring speed and accuracy.
+- **🔒 Multifactor Authentication**: Ensures security by requiring phone authentication for recipients via Docusign API.
 - **📊 Data Insights**: Unlocks critical insights from agreements by using AI to extract renewal dates, terms, and conditions, helping users make better decisions.
 - **🤖 Conversational AI**: Offers an avatar-based AI assistant powered by Azure Cognitive Services, allowing users to interact conversationally for agreement-related queries and tasks.
 

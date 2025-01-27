@@ -78,11 +78,10 @@ Follow these steps to get started with LightEstate:
 ---
 
 ## 🌟 Tech Stack
-
+- **Signature**: DocuSign APIs: Envelops, Payment, Invoice, SigningGroups, Account.
 - **Backend**: Flask (Python)
 - **Frontend**: HTML, CSS, JavaScript
 - **Containerization**: Docker
-- **IoT Integration**: Smart devices and automation protocols
 - **AI**: Azure AI GPT-4o, Azure Cognitive Services, and DocuSign APIs
 
 ---

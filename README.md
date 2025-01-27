@@ -1,6 +1,6 @@
 ﻿# LightEstate 
 
-🚀 **LightEstate** is a smart application that enhances property management and lighting systems through an easy-to-use, efficient, and intelligent interface. Experience seamless control with cutting-edge IoT integration and automation! 
+🚀 **LightEstate** is a smart application that enhances property management, agreements and learning about real estate through an easy-to-use, efficient, and intelligent interface. Experience seamless control with cutting-edge DocuSign API integration and automation! 
 
 ## 🎥 Live Demo
 
@@ -20,10 +20,15 @@ The architectural structure of the LightEstate application is illustrated below:
 
 ## ⚡ Features
 
-- 🌟 **IoT-Driven Lighting**: Automated lighting systems for convenience and efficiency.
-- 🛠️ **Easy Setup**: Deploy via Docker or run locally with ease.
-- 🏠 **Property Management**: Smart solutions for real estate and property automation.
-- 📊 **Real-Time Updates**: Monitor and control in real time.
+### What It Does
+
+LightEstate is an AI-powered web application that simplifies and automates real estate agreement management. Here’s what it offers:
+
+- **📄 Document Generation with AI**: Users can generate customized real estate agreements using Azure AI's GPT-4o model, ensuring speed and accuracy.
+- **✍️ Streamlined Signing**: Enables users to sign agreements themselves or send agreements to multiple parties seamlessly through DocuSign APIs.
+- **🔒 Multifactor Authentication**: Ensures security by requiring phone authentication for recipients.
+- **📊 Data Insights**: Unlocks critical insights from agreements by using AI to extract renewal dates, terms, and conditions, helping users make better decisions.
+- **🤖 Conversational AI**: Offers an avatar-based AI assistant powered by Azure Cognitive Services, allowing users to interact conversationally for agreement-related queries and tasks.
 
 ---
 
@@ -45,9 +50,9 @@ Follow these steps to get started with LightEstate:
 4. Build and run the Docker container:
    ```bash
    docker build -t lightestate .
-   docker run -p 5000:5000 lightestate
+   docker run -p 3000:3000 lightestate
    ```
-5. Open your browser and navigate to `http://localhost:5000`.
+5. Open your browser and navigate to `http://localhost:3000`.
 
 ### Option 2: Run Locally with `run.py`
 
@@ -68,7 +73,7 @@ Follow these steps to get started with LightEstate:
    ```bash
    python run.py
    ```
-6. Open your browser and navigate to `http://localhost:5000`.
+6. Open your browser and navigate to `http://localhost:3000`.
 
 ---
 
@@ -78,6 +83,7 @@ Follow these steps to get started with LightEstate:
 - **Frontend**: HTML, CSS, JavaScript
 - **Containerization**: Docker
 - **IoT Integration**: Smart devices and automation protocols
+- **AI**: Azure AI GPT-4o, Azure Cognitive Services, and DocuSign APIs
 
 ---
 

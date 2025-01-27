@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #4CAF50;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        form {
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #message {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .overlay.show {
+            display: flex;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            form {
+                padding: 15px;
+            }
+        }
+    </style>
+    <script>
+        function showOverlay() {
+            document.getElementById('overlay').classList.add('show');
+        }
+
+        async function checkStatus() {
+            const response = await fetch('/status');
+            const data = await response.json();
+            if (data.error) {
+                document.getElementById('message').innerHTML = `<p style="color: red;">${data.error}</p>`;
+                document.getElementById('overlay').classList.remove('show');
+            } else if (!data.generating) {
+                document.getElementById('message').innerHTML = `
+                    <p style="color: green;">Document generated successfully!</p>
+                    <a href="/download/docx" download style="color: #4CAF50;">Download DOCX</a><br>
+                    <a href="/download/pdf" download style="color: #4CAF50;">Download PDF</a><br>
+                    <a href="/view/docx" style="color: #4CAF50;">View DOCX in Browser</a>
+                `;
+                document.getElementById('overlay').classList.remove('show');
+            } else {
+                setTimeout(checkStatus, 2000); // Polling every 2 seconds
+            }
+        }
+
+        async function startGeneration(event) {
+            event.preventDefault();
+            showOverlay();
+            document.getElementById('message').innerHTML = ""; // Clear previous messages
+            const formData = new FormData(event.target);
+
+            const response = await fetch('/docgen', {
+                method: 'POST',
+                body: formData,
+            });
+            if (response.ok) {
+                checkStatus(); // Start polling for status updates
+            } else {
+                document.getElementById('message').innerHTML = `<p style="color: red;">Failed to start generation.</p>`;
+                document.getElementById('overlay').classList.remove('show');
+            }
+        }
+    </script>
+</head>
+<body>
+ <h1>Generate Your Document</h1>
+    <form method="POST" onsubmit="startGeneration(event);">
+      <input type="hidden" name="csrfmiddlewaretoken" value="csrf_token">
+       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>        <label for="prompt">Enter Prompt:</label><br>
+        <textarea id="prompt" name="prompt" rows="6" cols="50" required></textarea><br><br>
+        <button type="submit">Generate Document</button>
+    </form>
+    <div id="message"></div>
+    <div id="overlay" class="overlay">Please wait while we generate your file...</div>
+
+</body>
+</html>

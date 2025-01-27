@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Light estate Avatar</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
+  <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+  <script>
+    window.onload = function () {
+      document.getElementById('startSession').click();
+    };
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+    /* Spinner container for loading overlay */
+    #loadingOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    /* Spinner animation */
+    #loadingOverlay i {
+      font-size: 48px;
+      color: #0078d4;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Hide the overlay by default */
+    #loadingOverlay.hidden {
+      display: none;
+    }
+  </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const loadingOverlay = document.getElementById('loadingOverlay');
+      setTimeout(() => {
+        loadingOverlay.classList.add('hidden'); // Hide the overlay after 5 seconds
+      }, 7000);
+    });
+  </script>
+
+    <!-- JavaScript to auto-load the session -->
+  <script>
+    // Ensure the DOM content is fully loaded before starting the session
+    document.addEventListener("DOMContentLoaded", () => {
+      if (typeof window.startSession === "function") {
+        window.startSession();
+      } else {
+        console.error("startSession function is not defined.");
+      }
+    });
+  </script>
+
+</head>
+
+<body>
+
+
+  <div id="loadingOverlay">
+    <i class="fa fa-circle-o-notch"></i>
+  </div>
+
+
+
+    <h1>My  Avatar</h1>
+
+    <div id="configuration">
+      <h2 style="background-color: white; width: 300px;">Azure Speech Resource</h2>
+      <label style="font-size: medium;" for="region">Region:</label>
+      <select id="region" style="font-size: medium;">
+        <option value="westus2">West US 2</option>
+        <option value="westeurope">West Europe</option>
+        <option value="southeastasia">Southeast Asia</option>
+        <option value="southcentralus">South Central US</option>
+        <option value="northeurope">North Europe</option>
+        <option value="swedencentral">Sweden Central</option>
+        <option value="eastus2">East US 2</option>
+      </select>
+      <label style="font-size: medium;" for="APIKey">API Key:</label>
+      <input id="APIKey" type="password" size="32" style="font-size: medium;" value="cfbaff47909440eb81278175a74359ea" />
+      <div style="background-color: white; width: 300px;">
+        <input type="checkbox" id="enablePrivateEndpoint" onchange="window.updatePrivateEndpoint()">Enable Private
+        Endpoint</input><br />
+      </div>
+      <div id="showPrivateEndpointCheckBox" hidden="hidden">
+        <label style="font-size: medium;" for="privateEndpoint">Private Endpoint:</label>
+        <input id="privateEndpoint" type="text" size="64" style="font-size: medium;"
+          placeholder="https://{your custom name}.cognitiveservices.azure.com/"></input><br />
+      </div><br />
+
+      <h2 style="background-color: white; width: 300px;">Azure OpenAI Resource</h2>
+      <label style="font-size: medium;" for="azureOpenAIEndpoint">Endpoint:</label>
+      <input id="azureOpenAIEndpoint" type="text" size="64" style="font-size: medium;"
+        value="https://thisisoajo.openai.azure.com/"></input><br />
+      <label style="font-size: medium;" for="azureOpenAIApiKey">API Key:</label>
+      <input id="azureOpenAIApiKey" type="password" size="32" style="font-size: medium;"
+        value="9I4UEJweVUdih04Uv8AXcAxs5H8jSQRfwaugcSQYHcI882wSpFvqJQQJ99BAACL93NaXJ3w3AAABACOGkv4f" /><br />
+      <label style="font-size: medium;" for="azureOpenAIDeploymentName">Deployment Name:</label>
+      <input id="azureOpenAIDeploymentName" type="text" size="32" style="font-size: medium;" value="gpt-4o" /><br />
+      <label style="font-size: medium;" for="prompt">System Prompt:</label><br />
+      <textarea id="prompt" style="width: 640px;">
+
+        You are A professional AI Real estate assitant Personal Assistant, helping client with real estate questions. You work for light estate, a web application which gives people conselling and ability to send agreements and manage real estate project. Light estate is powered by a lot of technology but majorly docusign and azure ai services 
+
+        </textarea>
+      <div style="background-color: white; width: 300px;">
+        <input type="checkbox" id="enableOyd" onchange="window.updataEnableOyd()">Enable On Your Data</input><br />
+      </div>
+      <br />
+
+      <div id="cogSearchConfig" hidden="hidden">
+        <h2 style="background-color: white; width: 400px;">Azure Cognitive Search Resource</h2>
+        <label style="font-size: medium;" for="azureCogSearchEndpoint">Endpoint:</label>
+        <input id="azureCogSearchEndpoint" type="text" size="64" style="font-size: medium;"></input><br />
+        <label style="font-size: medium;" for="azureCogSearchApiKey">API Key:</label>
+        <input id="azureCogSearchApiKey" type="password" size="32" style="font-size: medium;" /><br />
+        <label style="font-size: medium;" for="azureCogSearchIndexName">Index Name:</label>
+        <input id="azureCogSearchIndexName" type="text" size="32" style="font-size: medium;" /><br />
+        <br />
+      </div>
+
+      <h2 style="background-color: white; width: 300px;">STT / TTS Configuration</h2>
+      <label style="font-size: medium;" for="sttLocale">STT Locale(s):</label>
+      <input id="sttLocales" type="text" size="64" style="font-size: medium;"
+        value="en-US,de-DE,es-ES,fr-FR,it-IT,ja-JP,ko-KR,zh-CN"></input><br />
+      <label style="font-size: medium;" for="ttsVoice">TTS Voice:</label>
+      <input id="ttsVoice" type="text" size="32" style="font-size: medium;"
+        value="en-GB-RyanNeural"></input><br />
+      <label style="font-size: medium;" for="customVoiceEndpointId">Custom Voice Deployment ID (Endpoint ID):</label>
+      <input id="customVoiceEndpointId" type="text" size="32" style="font-size: medium;" value=""></input><br />
+      <label style="font-size: medium;" for="personalVoiceSpeakerProfileID">Personal Voice Speaker Profile ID:</label>
+      <input id="personalVoiceSpeakerProfileID" type="text" size="32" style="font-size: medium;" value=""></input><br />
+      <div style="background-color: white; width: 300px;">
+        <input type="checkbox" id="continuousConversation">Continuous Conversation</input><br />
+      </div>
+      <br />
+
+      <h2 style="background-color: white; width: 300px;">Avatar Configuration</h2>
+      <label style="font-size: medium;" for="talkingAvatarCharacter">Avatar Character:</label>
+      <input id="talkingAvatarCharacter" type="text" size="16" style="font-size: medium;" value="jeff"></input><br />
+      <label style="font-size: medium;" for="talkingAvatarStyle">Avatar Style:</label>
+      <input id="talkingAvatarStyle" type="text" size="16" style="font-size: medium;" value="business"></input><br />
+      <div style="background-color: white; width: 200px;">
+        <input type="checkbox" id="customizedAvatar">Custom Avatar</input><br />
+      </div>
+      <div style="background-color: white; width: 200px;">
+        <input type="checkbox" id="autoReconnectAvatar">Auto Reconnect</input><br />
+      </div>
+      <div style="background-color: white; width: 200px;">
+        <input type="checkbox" id="useLocalVideoForIdle" onchange="window.updateLocalVideoForIdle()">Use Local Video for
+        Idle</input><br />
+      </div>
+      <br />
+    </div>
+
+    <button id="startSession" onclick="window.startSession()"><i class="fa fa-user" style="font-size:24px"></i> Avatar Session Active</button>
+    <button id="microphone" onclick="window.microphone()" disabled><i class="fa fa-microphone" style="font-size:24px"></i> Start Microphone</button>
+    <button id="stopSpeaking" onclick="stopSpeaking()" disabled><i class="fa fa-microphone-slash" style="font-size:24px"></i>Stop Speaking</button>
+    <button id="clearChatHistory" onclick="window.clearChatHistory()"><i class="fa fa-trash" style="font-size:24px"></i>Clear Chat History</button>
+    <!--<button id="stopSession" onclick="window.stopSession()" disabled>Close Avatar Session</button>-->
+    <button id="stopSession"  disabled></button>
+
+    <div id="videoContainer" style="position: relative; width: 960px;">
+      <div id="overlayArea" style="position: absolute;">
+        <div id="chatHistory" style="
+            width: 360px;
+            height: 500px;
+            font-size: medium;
+            border: none;
+            resize: none;
+            background-color: transparent;
+            overflow: hidden;" contentEditable="true" hidden></div>
+      </div>
+      <div id="localVideo" hidden>
+        <video src="video/lisa-casual-sitting-idle.mp4" autoplay loop muted></video>
+      </div>
+      <div id="remoteVideo"></div>
+    </div>
+    <div margin-top="5px">
+      <div id="showTypeMessageCheckbox">
+        <input type="checkbox" id="showTypeMessage" onchange="window.updateTypeMessageBox()" disabled>Type
+        Message</input><br />
+      </div>
+      <div id="userMessageBox"
+        style="width: 940px; min-height: 150px; max-height: 200px; border: 1px solid ; overflow-y: scroll; padding: 10px;"
+        hidden type="text" contentEditable="true"></div>
+    </div>
+    <div>
+      <img id="uploadImgIcon" src="./image/attachment.jpg" alt="Button" style="cursor: pointer;" hidden />
+    </div>
+
+</body>
+
+<!--
+          You are a helpful assistant. Your role is to act as a bridge between the database and the user’s query for ride booking. Here’s an example interaction:
+
+            User: I want to go to the closest paytrust bank from here becuase that is actually my office.
+            Assistant: Sure! The closest bank from your location is PayTrust Bank, approximately 1.1 kilometers away. Would you like me to book a ride there for you?
+            User: Yes, please. Thank you!
+            Assistant: You're welcome! I’ve booked your ride to PayTrust Bank. Your driver will arrive shortly. Is there anything else I can assist you with?
+
+-->
+
+</html>
